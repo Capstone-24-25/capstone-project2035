@@ -1,9 +1,13 @@
 library(tidyverse)
 library(readxl)
 library(httr)
+library(janitor)
 
+# create list of codes of green jobs
 green_jobs <- c('47-2231', '49-9081', '49-9099', '47-4099', '47-1011', '41-4011', '47-2211', '49-9042', '51-9012', '51-8099', '51-8013', '51-8012', '51-8011', '51-4041', '19-4041', '19-4051', '17-2051', '17-2071', '17-2141', '17-2199', '11-3051', '11-3071', '11-9041', '11-9199')
+# create list of fossil fuel jobs
 ff_jobs <- c('47-5000', '47-5010', '47-5011', '47-5012', '47-5013', '47-5022', '47-5041', '47-5043', '47-5044', '47-5071', '47-5081')
+# 42200 corresponds to SB, 37100 to Ventura, 42020 to SLO
 counties_code <- c('42200', '37100', '42020')
 
 # from up until 2000, data needs reformatting
@@ -16,15 +20,15 @@ oews_2001 <- rbind(
   read_excel("~/Desktop/PSTAT 197/data/oes01ma/MSA_2001_dl_2.xls"), 
   read_excel("~/Desktop/PSTAT 197/data/oes01ma/MSA_2001_dl_3.xls")
 )
-colnames(oews_2001)[which(names(oews_2001) == "occ_code")] <- "OCC_CODE"
-colnames(oews_2001)[which(names(oews_2001) == "area")] <- "AREA"
+#colnames(oews_2001)[which(names(oews_2001) == "occ_code")] <- "OCC_CODE"
+#colnames(oews_2001)[which(names(oews_2001) == "area")] <- "AREA"
 
 oews_2002 <- rbind(
   read_excel("~/Desktop/PSTAT 197/data/oes02ma/MSA_2002_dl_1.xls"), 
   read_excel("~/Desktop/PSTAT 197/data/oes02ma/MSA_2002_dl_2.xls")
 )
-colnames(oews_2002)[which(names(oews_2002) == "occ_code")] <- "OCC_CODE"
-colnames(oews_2002)[which(names(oews_2002) == "area")] <- "AREA"
+#colnames(oews_2002)[which(names(oews_2002) == "occ_code")] <- "OCC_CODE"
+#colnames(oews_2002)[which(names(oews_2002) == "area")] <- "AREA"
 
 oews_2003 <- rbind(
   read_excel("~/Desktop/PSTAT 197/data/oesn03ma/MSA_november2003_dl_1.xls"), 
@@ -102,8 +106,8 @@ oews_2017 <- read_excel("~/Desktop/PSTAT 197/data/oesm17ma/MSA_M2017_dl.xlsx")
 oews_2018 <- read_excel("~/Desktop/PSTAT 197/data/oesm18ma/MSA_M2018_dl.xlsx")
 
 oews_2019 <- read_excel("~/Desktop/PSTAT 197/data/oesm19ma/MSA_M2019_dl.xlsx")
-colnames(oews_2019)[which(names(oews_2019) == "occ_code")] <- "OCC_CODE"
-colnames(oews_2019)[which(names(oews_2019) == "area")] <- "AREA"
+#colnames(oews_2019)[which(names(oews_2019) == "occ_code")] <- "OCC_CODE"
+#colnames(oews_2019)[which(names(oews_2019) == "area")] <- "AREA"
 
 oews_2020 <- read_excel("~/Desktop/PSTAT 197/data/oesm20ma/MSA_M2020_dl.xlsx")
 
@@ -120,6 +124,55 @@ oews_data <- list(oews_2001, oews_2002, oews_2003, oews_2004, oews_2005, oews_20
 years <- 2001:2021
 
 for(i in 1:23){
+  # coerce data type to df
   oews_data[[i]] <- data.frame(oews_data[[i]])
-  oews_data[[i]] <- oews_data[[i]][(oews_data[[i]]$OCC_CODE %in% green_jobs | oews_data[[i]]$OCC_CODE %in% ff_jobs) & (oews_data[[i]]$AREA %in% counties_code), ]
+  
+  # apply function to turn column names to snake case
+  oews_data[[i]] <- clean_names(oews_data[[i]])
+  
+  # from 2001 to 2004, each of the three counties were listed by 4 number codes. The loop
+  # below fixes this
+  if (i %in% 1:4){
+    oews_data[[i]] <- oews_data[[i]] %>%
+      mutate(
+        area = case_when(
+          area == 7480 ~ 42200,
+          area == 7460 ~ 42020,
+          area == 8735 ~ 37100
+        )
+      )
+  }
+  
+  # between 2005 and 2014 SB area was listed by 42060. The loop below adjusts this to 42200.
+  if (i %in% 5:14){
+    oews_data[[i]]$area[oews_data[[i]]$area == 42060] <- 42200
+  }
+  
+  # if (i %in% 5:14){
+  #   oews_data[[i]] <- oews_data[[i]] %>%
+  #     mutate(
+  #       area = case_when(
+  #         area == 42060 ~ 42200,
+  #         area == 42020 ~ 42020,
+  #         area == 37100 ~ 37100
+  #       )
+  #     )
+  # }
+  
+  # filter data frames to include only green jobs/fossil fuel jobs, be in the three counties
+  oews_data[[i]] <- oews_data[[i]][(oews_data[[i]]$occ_code %in% green_jobs | oews_data[[i]]$occ_code %in% ff_jobs) & (oews_data[[i]]$area %in% counties_code), ]
+  
+  # adds a column denoting the year that the data was drawn from 
+  oews_data[[i]] <- oews_data[[i]] %>% 
+    mutate(
+      year = years[i]
+    )
 }
+
+library(rlist)
+write_rds(oews_data, "~/Desktop/PSTAT 197/Projects/capstone-project2035/Data/oews_data.rds")
+oews_data <- read_rds("~/Desktop/PSTAT 197/Projects/capstone-project2035/Data/oews_data.rds")
+
+
+
+
