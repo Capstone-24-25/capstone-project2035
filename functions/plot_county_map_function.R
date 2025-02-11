@@ -15,8 +15,8 @@ plot_county_map <- function (data, title = '', save_title = 'basic_map') {
   
   # creating a plot of the three counties based on their values
   ggplot(selected_counties, aes(long, lat, group = group, fill = value)) + 
-    geom_polygon(colour = "gray75") +
-    scale_fill_gradient(low = "darkseagreen1", high = "darkseagreen4") +
+    geom_polygon(colour = "black") +
+    scale_fill_gradient(low = "white", high = "blue", limits = c(0, 400)) +
     coord_equal() +
     theme_void() +
     theme(
