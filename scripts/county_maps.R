@@ -28,6 +28,8 @@ plot_county_map(data = data, title = "Proportion of Fossil Fuel Jobs to Green Jo
 
 
 
+setwd("~/Documents/capstone-project2035/")
+
 
 my_data <- read_csv("./Data/MSA_ALL_YEARS.csv")
 
@@ -48,6 +50,9 @@ total_employment$AREA_TITLE[total_employment$AREA_TITLE == "San Luis Obispo-Paso
 total_employment$AREA_TITLE[total_employment$AREA_TITLE == "San Luis Obispo-Paso Robles-Arroyo Grande, CA"] <- "san luis obispo"
 total_employment$AREA_TITLE[total_employment$AREA_TITLE == "Santa Barbara-Santa Maria-Lompoc, CA MSA"] <- "santa barbara"
 total_employment$AREA_TITLE[total_employment$AREA_TITLE == "Santa Maria-Santa Barbara, CA"] <- "santa barbara"
+total_employment$AREA_TITLE[total_employment$AREA_TITLE == "Santa Barbara-Santa Maria, CA"] <- "santa barbara"
+total_employment$AREA_TITLE[total_employment$AREA_TITLE == "Santa Barbara-Santa Maria-Goleta, CA"] <- "santa barbara"
+
 
 colnames(total_employment)[colnames(total_employment) == "AREA_TITLE"] <- "subregion"
 
