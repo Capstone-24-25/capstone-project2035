@@ -90,4 +90,24 @@ for (year in 2017:2023) {
   median_earning <- new_acs_wage(file_name, median_earning)
 }
 
-write.csv(median_earning, "Data/median_yearly_earning.csv", row.names = FALSE)
+#add county variable
+vent_zip <- c(91320, 91360, 91361, 91362, 91377, 93001, 93003, 93004, 93010, 93012, 93015, 93021,
+            93022, 93023, 93030, 93033, 93035, 93036, 93040, 93041, 93042, 93043, 93060, 93063,
+            93064, 93065, 93066)
+sb_zip <- c(93013, 93067, 93101, 93103, 93105, 93106, 93108, 93109, 93110, 93111, 93117,
+            93254, 93427, 93429, 93434, 93436, 93437, 93440, 93441, 93454, 93455, 93458,
+            93460, 93463)
+slo_zip <- c(93401,93402,93405,93407,93409,93410,93420,93422,93424,93426,93428,93430,93408,
+             93432,93433,93442,93444,93445,93446,93449,93451,93452,93453,93454,93461,93465
+)
+median_earning <- median_earning %>% 
+  mutate(zipcode = as.factor(zipcode),
+         county = ifelse(zipcode %in% vent_zip, "Ventura", 
+                         ifelse(zipcode %in% sb_zip, "Santa Barbara", 
+                                ifelse(zipcode %in% slo_zip, "San Luis Obispo", NA))),
+         estimate = as.numeric(estimate),
+         margin_of_error = as.numeric(margin_of_error))
+
+write.csv(median_earning, "../Data/median_yearly_earning.csv", row.names = FALSE)
+
+
