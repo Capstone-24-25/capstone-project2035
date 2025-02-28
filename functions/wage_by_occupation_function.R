@@ -108,6 +108,13 @@ median_earning <- median_earning %>%
          estimate = as.numeric(estimate),
          margin_of_error = as.numeric(margin_of_error))
 
-write.csv(median_earning, "../Data/median_yearly_earning.csv", row.names = FALSE)
+#add column for green/ff job
+# occupation grouping found at: https://www.bls.gov/oes/current/oes_stru.htm
+green <- list("installation_maintenance_and_repair_occupations", "sales_and_related_occupations", "production_occupations", "life_physical_and_social_science_occupations", "architecture_and_engineering_occupations", "management_occupations")
+data <- median_earning %>% 
+  mutate(job_type = ifelse(occupation == "construction_and_extraction_occupations", "Fossil Fuel", 
+                           ifelse(occupation %in% green, "Green", "Other")))
+
+write.csv(data, "../Data/median_yearly_earning.csv", row.names = FALSE)
 
 
