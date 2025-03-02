@@ -1,7 +1,6 @@
 library(tidyverse)
 library(readxl)
 library(httr)
-library(geomtextpath)
 
 ## correct year variable, turn TOT_EMP into numeric variable
 data <- read.csv("./Data/MSA_ALL_YEARS.csv") %>% 
@@ -109,7 +108,7 @@ green_jobs <- data %>%
           "construction/skilled trades",
           ifelse(
             OCC_TITLE %in% green_jobs_list[[4]],
-            "machinery/operations/maintenance",
+            "operations/maintenance",
             "sales"
           )
         )
@@ -128,7 +127,7 @@ ff_total_count %>%
   ) +
   geom_line() +
   ylim(0, 600) +
-  labs(title = "Fossil Fuel Jobs Across Years") +
+  labs(title = "Fossil Fuel Jobs on Central Coast 2001-2023", x = "Year", y = "Jobs") +
   theme_bw()
 green_total_count %>% 
   ggplot(
@@ -136,7 +135,7 @@ green_total_count %>%
   ) +
   geom_line() +
   ylim(0, 25000) +
-  labs(title = "Green Jobs Across Years") +
+  labs(title = "Green Jobs on Central Coast 2001-2023", x = "Year", y = "Jobs") +
   theme_bw()
 
 ## jobs by county
@@ -148,7 +147,7 @@ ff_county_count %>%
   ) +
   geom_line() +
   ylim(0, 425) +
-  labs(title = "Fossil Fuel Jobs by County") +
+  labs(title = "Fossil Fuel Jobs by County 2001-2023", x = "Year", y = "Jobs", color = "County") +
   theme_bw()
 green_county_count %>%
   ggplot(
@@ -158,7 +157,7 @@ green_county_count %>%
   ) +
   geom_line() +
   ylim(0, 12000) +
-  labs(title = "Green Jobs by County") +
+  labs(title = "Green Jobs by County 2001-2023", x = "Year", y = "Jobs", color = "County") +
   theme_bw()
 
 ## specific jobs across years
@@ -170,7 +169,7 @@ ff_jobs %>%
   ) +
   geom_line() +
   ylim(0, 425) +
-  labs(title = "Employment by Specific Fossil Fuel Job from 2001-2023") +
+  labs(title = "Employment by Fossil Fuel Occupation 2001-2023", x = "Year", y = "Jobs", color = "Occupation") +
   theme_bw()
 
 green_jobs %>% 
@@ -181,5 +180,5 @@ green_jobs %>%
   ) +
   geom_line() +
   ylim(0, 8250) +
-  labs(title = "Employment by Specific Green Job from 2001-2023") +
+  labs(title = "Employment by Green Occupation 2001-2023", x = "Year", y = "Jobs", color = "Occupation") +
   theme_bw()
