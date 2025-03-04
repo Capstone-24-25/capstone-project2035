@@ -1,0 +1,46 @@
+---
+title: "skills_match"
+author: "Christina Hefan Cui"
+date: "2025-03-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Load necessary libraries
+library(tidyverse)
+library(dplyr)
+library(readr)
+
+# Load datasets
+ff_skills <- read_csv("Desktop/UCSB/Statistics & Data Science/PSTAT 197/capstone-project2035/Data/skills_ff_lvl.csv")
+
+green_skills <- read_csv("Desktop/UCSB/Statistics & Data Science/PSTAT 197/capstone-project2035/Data/skills_green_lvl.csv")
+
+# Compute the mean skill levels for both job categories
+ff_skills_avg <- ff_skills %>%
+  select(-c(O.NET.SOC.Code, short_code, Title, Scale.ID)) %>%
+  summarise(across(everything(), mean, na.rm = TRUE))
+
+green_skills_avg <- green_skills %>%
+  select(-c(O.NET.SOC.Code, short_code, Title, Scale.ID)) %>%
+  summarise(across(everything(), mean, na.rm = TRUE))
+
+# Combine the results into a comparison table
+skill_comparison <- bind_rows(ff_skills_avg, green_skills_avg) %>%
+  mutate(Category = c("Fossil Fuel Jobs", "Green Jobs")) %>%
+  pivot_longer(cols = -Category, names_to = "Skill", values_to = "Value") %>%
+  pivot_wider(names_from = "Category", values_from = "Value") %>%
+  mutate(Difference = `Green Jobs` - `Fossil Fuel Jobs`)
+
+# Print results
+print(skill_comparison)
+
+# Optionally, save the results to a CSV file
+write_csv(skill_comparison, "skill_comparison.csv")
+
+```
+
