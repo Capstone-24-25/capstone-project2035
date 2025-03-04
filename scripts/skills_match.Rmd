@@ -43,4 +43,8 @@ print(skill_comparison)
 write_csv(skill_comparison, "skill_comparison.csv")
 
 ```
+```{r}
+view(skill_comparison.csv)
+```
+
 
