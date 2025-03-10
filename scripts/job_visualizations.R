@@ -9,17 +9,17 @@ data <- read.csv("./Data/MSA_ALL_YEARS.csv") %>%
     TOT_EMP = as.numeric(TOT_EMP)
   )
 ## correct county names 
-data$AREA_TITLE[data$AREA_TITLE == "Oxnard-Thousand Oaks-Ventura, CA"] <- "ventura"
-data$AREA_TITLE[data$AREA_TITLE == "Ventura, CA PMSA"] <- "ventura"
-data$AREA_TITLE[data$AREA_TITLE == "San Luis Obispo-Paso Robles, CA"] <- "san luis obispo"
-data$AREA_TITLE[data$AREA_TITLE == "San Luis Obispo-Paso Robles-Arroyo Grande, CA"] <- "san luis obispo"
-data$AREA_TITLE[data$AREA_TITLE == "San Luis Obispo-Atascadero-Paso Robles, CA M"] <- "san luis obispo"
-data$AREA_TITLE[data$AREA_TITLE == "San Luis Obispo-Atascadero-Paso Robles, CA MSA"] <- "san luis obispo"
-data$AREA_TITLE[data$AREA_TITLE == "San Luis Obispo-Paso Robles, CA"] <- "san luis obispo"
-data$AREA_TITLE[data$AREA_TITLE == "Santa Barbara-Santa Maria-Lompoc, CA MSA"] <- "santa barbara"
-data$AREA_TITLE[data$AREA_TITLE == "Santa Maria-Santa Barbara, CA"] <- "santa barbara"
-data$AREA_TITLE[data$AREA_TITLE == "Santa Barbara-Santa Maria, CA"] <- "santa barbara"
-data$AREA_TITLE[data$AREA_TITLE == "Santa Barbara-Santa Maria-Goleta, CA"] <- "santa barbara"
+data$AREA_TITLE[data$AREA_TITLE == "Oxnard-Thousand Oaks-Ventura, CA"] <- "Ventura"
+data$AREA_TITLE[data$AREA_TITLE == "Ventura, CA PMSA"] <- "Ventura"
+data$AREA_TITLE[data$AREA_TITLE == "San Luis Obispo-Paso Robles, CA"] <- "San Luis Obispo"
+data$AREA_TITLE[data$AREA_TITLE == "San Luis Obispo-Paso Robles-Arroyo Grande, CA"] <- "San Luis Obispo"
+data$AREA_TITLE[data$AREA_TITLE == "San Luis Obispo-Atascadero-Paso Robles, CA M"] <- "San Luis Obispo"
+data$AREA_TITLE[data$AREA_TITLE == "San Luis Obispo-Atascadero-Paso Robles, CA MSA"] <- "San Luis Obispo"
+data$AREA_TITLE[data$AREA_TITLE == "San Luis Obispo-Paso Robles, CA"] <- "San Luis Obispo"
+data$AREA_TITLE[data$AREA_TITLE == "Santa Barbara-Santa Maria-Lompoc, CA MSA"] <- "Santa Barbara"
+data$AREA_TITLE[data$AREA_TITLE == "Santa Maria-Santa Barbara, CA"] <- "Santa Barbara"
+data$AREA_TITLE[data$AREA_TITLE == "Santa Barbara-Santa Maria, CA"] <- "Santa Barbara"
+data$AREA_TITLE[data$AREA_TITLE == "Santa Barbara-Santa Maria-Goleta, CA"] <- "Santa Barbara"
 
 ## standardize occupation titles
 data$OCC_TITLE <- tolower(data$OCC_TITLE)
@@ -127,7 +127,7 @@ ff_total_count %>%
   ) +
   geom_line() +
   ylim(0, 600) +
-  labs(title = "Fossil Fuel Jobs on Central Coast 2001-2023", x = "Year", y = "Jobs") +
+  labs(title = "Fossil Fuel Jobs on Central Coast 2001-2023", x = "Year", y = "Count") +
   theme_bw()
 green_total_count %>% 
   ggplot(
@@ -135,7 +135,7 @@ green_total_count %>%
   ) +
   geom_line() +
   ylim(0, 25000) +
-  labs(title = "Green Jobs on Central Coast 2001-2023", x = "Year", y = "Jobs") +
+  labs(title = "Green Jobs on Central Coast 2001-2023", x = "Year", y = "Count") +
   theme_bw()
 
 ## jobs by county
@@ -147,7 +147,7 @@ ff_county_count %>%
   ) +
   geom_line() +
   ylim(0, 425) +
-  labs(title = "Fossil Fuel Jobs by County 2001-2023", x = "Year", y = "Jobs", color = "County") +
+  labs(title = "Fossil Fuel Jobs by County 2001-2023", x = "Year", y = "Count", color = "County") +
   theme_bw()
 green_county_count %>%
   ggplot(
@@ -157,7 +157,7 @@ green_county_count %>%
   ) +
   geom_line() +
   ylim(0, 12000) +
-  labs(title = "Green Jobs by County 2001-2023", x = "Year", y = "Jobs", color = "County") +
+  labs(title = "Green Jobs by County 2001-2023", x = "Year", y = "Count", color = "County") +
   theme_bw()
 
 ## specific jobs across years
@@ -169,7 +169,7 @@ ff_jobs %>%
   ) +
   geom_line() +
   ylim(0, 425) +
-  labs(title = "Employment by Fossil Fuel Occupation 2001-2023", x = "Year", y = "Jobs", color = "Occupation") +
+  labs(title = "Employment by Fossil Fuel Occupation 2001-2023", x = "Year", y = "Count", color = "Occupation") +
   theme_bw()
 
 green_jobs %>% 
@@ -180,5 +180,5 @@ green_jobs %>%
   ) +
   geom_line() +
   ylim(0, 8250) +
-  labs(title = "Employment by Green Occupation 2001-2023", x = "Year", y = "Jobs", color = "Occupation") +
+  labs(title = "Employment by Green Occupation 2001-2023", x = "Year", y = "Count", color = "Occupation") +
   theme_bw()
