@@ -1,0 +1,46 @@
+---
+title: "age matching"
+author: "Amy Ji"
+date: "
+output: html_document
+---
+
+```{r}
+library(ggplot2)
+
+# Load the datasets
+ff_jobs <- read.csv("Documents/GitHub/capstone-project2035/Data/CA_jobs_ff.csv")
+green_jobs <- read.csv("Documents/GitHub/capstone-project2035/Data/CA_jobs_green.csv")
+
+# Define wage-based age cohorts as a proxy for experience levels
+wage_bins <- c(0, 60000, 100000, 200000)  # Approximate cutoffs for experience levels
+wage_labels <- c("18-29", "30-49", "50+")  # Young workers, mid-career, near-retirement
+
+# Assign wage-based age cohorts
+ff_jobs$Age_Cohort_Plot <- cut(ff_jobs$A_MEDIAN, breaks = wage_bins, labels = wage_labels, include.lowest = TRUE)
+green_jobs$Age_Cohort_Plot <- cut(green_jobs$A_MEDIAN, breaks = wage_bins, labels = wage_labels, include.lowest = TRUE)
+
+# Aggregate counts of jobs in each age cohort (proxy)
+ff_age_distribution_plot <- as.data.frame(prop.table(table(ff_jobs$Age_Cohort_Plot)) * 100)
+green_age_distribution_plot <- as.data.frame(prop.table(table(green_jobs$Age_Cohort_Plot)) * 100)
+
+# Rename columns
+colnames(ff_age_distribution_plot) <- c("Age_Cohort", "Percentage_FF")
+colnames(green_age_distribution_plot) <- c("Age_Cohort", "Percentage_Green")
+
+# Merge data for plotting
+age_distribution <- merge(ff_age_distribution_plot, green_age_distribution_proxy, by = "Age_Cohort", all = TRUE)
+age_distribution <- reshape2::melt(age_distribution, id.vars = "Age_Cohort", variable.name = "Job_Type", value.name = "Percentage")
+
+# Create the bar plot
+p <- ggplot(age_distribution, aes(x = Age_Cohort, y = Percentage, fill = Job_Type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  scale_fill_manual(values = c("lightblue", "lightgreen")) +
+  labs(title = "Wage-Based Age Distribution: Fossil Fuel vs. Green Jobs", 
+       x = "Age Cohort (Proxy)", y = "Percentage of Workforce") +
+  theme_minimal()
+
+# Print the plot
+print(p)
+```
+
