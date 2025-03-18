@@ -9,8 +9,8 @@ output: html_document
 library(ggplot2)
 
 # Load the datasets
-ff_jobs <- read.csv("Documents/GitHub/capstone-project2035/Data/CA_jobs_ff.csv")
-green_jobs <- read.csv("Documents/GitHub/capstone-project2035/Data/CA_jobs_green.csv")
+ff_jobs <- read.csv("~/Documents/GitHub/capstone-project2035/Data/CA_jobs_ff.csv")
+green_jobs <- read.csv("~/Documents/GitHub/capstone-project2035/Data/CA_jobs_green.csv")
 
 # Define wage-based age cohorts as a proxy for experience levels
 wage_bins <- c(0, 60000, 100000, 200000)  # Approximate cutoffs for experience levels
@@ -37,7 +37,7 @@ p <- ggplot(age_distribution, aes(x = Age_Cohort, y = Percentage, fill = Job_Typ
   geom_bar(stat = "identity", position = "dodge") +
   scale_fill_manual(values = c("lightblue", "lightgreen")) +
   labs(title = "Wage-Based Age Distribution: Fossil Fuel vs. Green Jobs", 
-       x = "Age Cohort (Proxy)", y = "Percentage of Workforce") +
+       x = "Age Cohort", y = "Percentage of Workforce") +
   theme_minimal()
 
 # Print the plot
