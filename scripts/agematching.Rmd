@@ -43,4 +43,51 @@ p <- ggplot(age_distribution, aes(x = Age_Cohort, y = Percentage, fill = Job_Typ
 # Print the plot
 print(p)
 ```
+```{r}
+
+library(readr)
+
+# Define column positions manually based on IPUMS CPS fixed-width format
+col_positions <- fwf_positions(
+  start = c(1, 19, 75, 109, 124, 219),  # Approximate positions of key variables
+  end = c(4, 20, 76, 112, 126, 226),
+  col_names = c("YEAR", "AGE", "EMPSTAT", "OCC", "IND1990", "WTSUPP")
+)
+
+# Read the fixed-width file
+data <- read_fwf("cps_00003.dat", col_positions)
+
+# Convert data types
+data$AGE <- as.numeric(data$AGE)
+data$EMPSTAT <- as.numeric(data$EMPSTAT)
+data$OCC <- as.numeric(data$OCC)
+data$IND1990 <- as.numeric(data$IND1990)
+data$WTSUPP <- as.numeric(data$WTSUPP)
+
+# Save as CSV
+write_csv(data, "cps_asec_2023_filtered.csv")
+
+# Print a preview
+head(data)
+
+```
+```{r}
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+
+# Define histogram plot
+ggplot() +
+  geom_histogram(data = ff_jobs, aes(x = A_MEDIAN, y = ..density.., fill = "Fossil Fuel Jobs"), 
+                 bins = 20, alpha = 0.5, color = "red") +
+  geom_histogram(data = green_jobs, aes(x = A_MEDIAN, y = ..density.., fill = "Green Jobs"), 
+                 bins = 20, alpha = 0.5, color = "green") +
+  scale_fill_manual(values = c("red", "green")) +
+  labs(title = "Wage-Based Age Distribution",
+       x = "Median Wage",
+       y = "Density",
+       fill = "Job Type") +
+  theme_minimal()
+
+```
 
