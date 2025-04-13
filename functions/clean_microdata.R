@@ -15,7 +15,9 @@ puma_codes <- list(
   "07901" = "San Luis Obispo County (West)--Coastal Region PUMA",
   "07902" = "San Luis Obispo County (East)--Inland Region PUMA"
 )
-soc_names <- list(
+
+#2016-2023 data files
+soc_2023 <- list(
   "113051" = "Industrial Production Managers",
   "113071" = "Transportation, Storage, And Distribution Managers",
   "119041" = "Architectural And Engineering Managers",
@@ -48,7 +50,6 @@ soc_names <- list(
 )
 green_jobs <- list("472231", "4990XX", "4740XX", "471011", "414010", "472211", "519010", "518090", "518010", "514041", "1940XX", "172070","172051", "1721XX", "113051", "113071", "119041", "1191XX")
 
-#2016-2023 data files
 data <- data.frame(pwgtp = numeric(), 
                    puma = character(), 
                    region = character(), 
@@ -86,4 +87,15 @@ for (year in 2016:2023) {
 
 data <- data %>% 
   select(-x)
-write.csv(data, "Data/acs_microdata_2023_2016.csv", row.names = FALSE)
+
+# -2015 data files 
+data <- read.csv("Data/acs_microdata/ACSPUMS1Y2013.csv")
+unique(data$SOCP)
+
+###
+library(tidycensus)
+data(pums_variables)
+pums_vars_2011 <- pums_variables %>% 
+  filter(year == 2011, survey == "acs1")
+pums_vars_2011 %>% 
+  distinct(var_code, var_label, data_type, level)
