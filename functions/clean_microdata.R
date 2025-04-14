@@ -78,7 +78,7 @@ for (year in 2016:2023) {
         str_remove_all(" County") %>% 
         str_trim(),
       occ_type = ifelse(socp %in% green_jobs, "Green", "Fossil Fuel"),
-      occupation = recode(socp, !!!soc_names) ,
+      occupation = recode(socp, !!!soc_2023) ,
       year = year
     )
   #bind to data
@@ -88,14 +88,127 @@ for (year in 2016:2023) {
 data <- data %>% 
   select(-x)
 
-# -2015 data files 
-data <- read.csv("Data/acs_microdata/ACSPUMS1Y2013.csv")
-unique(data$SOCP)
+#2010-2015 data files
+soc_2015 <- list(
+  "113051" = "Industrial Production Managers",
+  "113071" = "Transportation, Storage, And Distribution Managers",
+  "119041" = "Architectural And Engineering Managers",
+  "119XXX" = "Other Managers",
+  "172051" = "Civil Engineers",
+  "172070" = 'Electrical And Electronics Engineers',
+  '172141' = 'Mechanical Engineers',
+  '1721XX' = 'Petroleum, Mining And Geological Engineers, Including Mining Safety Engineers',
+  '1721YY' = 'Other Engineers',
+  '192040' = 'Environmental Scientists and Geoscientists',
+  '1940XX' = 'Geological and Petroleum Technicians, and Nuclear Technicians',
+  '1940YY' = 'Other Life, Physical, And Social Science Technicians',
+  '414010' = 'Sales Representatives, Wholesale And Manufacturing',
+  '471011' = 'First-Line Supervisors Of Construction Trades And Extraction Workers',
+  '472211' = 'Sheet Metal Workers',
+  '475021' = 'Earth Drillers, Except Oil and Gas',
+  '475031' = 'Explosives Workers, Ordnance Handling Experts, And Blasters',
+  '475040' = 'Mining Machine Operators',
+  '4750XX' = 'Other Extraction Workers',
+  '4750YY' = 'Derrick, Rotary Drill, And Service Unit Operators, And Roustabouts, Oil, Gas, and Mining',
+  '47XXX' = 'Other Construction Workers, Including Solar Photovoltaic Installers',
+  '49904X' = 'Industrial And Refractory Machinery Mechanics',
+  '49909X' = 'Other Installation, Maintenance, And Repair Workers',
+  '4990XX' = 'Other Installation, Maintenance, And Repair Workers',
+  '514041' = 'Machinists',
+  '518010' = 'Power Plant Operators, Distributors, And Dispatchers',
+  '518090' = 'Miscellaneous Plant And System Operators',
+  '519010' = 'Chemical Processing Machine Setters, Operators, And Tenders',
+  '519020' = 'Crushing, Grinding, Polishing, Mixing, And Blending Workers'
+)
+puma_2011 <- list(
+  "06702" = "Santa Barbara County (South Coast)",
+  '06701' = 'Santa Barbara County (North)',
+  '06601' = 'Ventura County (North)',
+  '06602' = 'Ventura County (South Central)',
+  '06200' = 'Ventura County (Oxnard City)',
+  '06300' = 'Ventura County (San Buenaventura City)',
+  '06400' = '6400 -- Ventura County (Simi Valley City)',
+  '06500' = 'Ventura County (Thousand Oaks City)',
+  '03701' = 'San Luis Obispo County (Northeast)',
+  '03702' = 'San Luis Obispo County (Southwest)'
+)
 
-###
-library(tidycensus)
-data(pums_variables)
-pums_vars_2011 <- pums_variables %>% 
-  filter(year == 2011, survey == "acs1")
-pums_vars_2011 %>% 
-  distinct(var_code, var_label, data_type, level)
+for (year in 2010:2015) {
+  file <- read.csv(paste0("Data/acs_microdata/ACSPUMS1Y", year, ".csv"))
+  clean_file <-file %>%
+    clean_names() %>%
+    select(-any_of(c("state", "x7", "st", 'x'))) %>% 
+    mutate(
+      occ_type = ifelse(socp %in% green_jobs, "Green", "Fossil Fuel"),
+      occupation = recode(socp, !!!soc_2015) ,
+      year = year
+    ) %>% 
+    mutate(
+      puma = as.character(puma),
+      puma = str_pad(puma, width = 5, side = "left", pad = "0"),
+      puma = str_trim(puma),
+      region = ifelse(
+        year >= 2012,
+        recode(puma, !!!puma_codes),
+        recode(puma, !!!puma_2011)
+        ),
+      county = str_extract(region, "([A-Za-z ]+?) County") %>% 
+        str_remove_all(" County") %>% 
+        str_trim()
+    ) %>%
+    filter(
+      (year >= 2012 & puma %in% names(puma_codes)) |
+        (year < 2012 & puma %in% names(puma_2011))
+    )
+  data <- bind_rows(data, clean_file)
+}
+
+soc_2009 <- list(
+  "113051" = "Industrial Production Managers",
+  "113071" = "Transportation, Storage, And Distribution Managers",
+  "119041" = "Engineering Managers",
+  "172051" = "Civil Engineers",
+  "172070" = 'Electrical And Electronics Engineers',
+  '172141' = 'Mechanical Engineers',
+  '1721XX' = 'Petroleum, Mining And Geological Engineers, Including Mining Safety Engineers',
+  '1721YY' = 'Other Engineers, Including Nuclear Engineers',
+  '192040' = 'Environmental Scientists and Geoscientists',
+  '1940XX' = 'Other Life, Physical, And Social Science Technicians',
+  '414010' = 'Sales Representatives, Wholesale And Manufacturing',
+  '471011' = 'First-Line Supervisors/Managers Of Construction Trades And Extraction Workers',
+  '472211' = 'Electricians',
+  '475021' = 'Earth Drillers, Except Oil and Gas',
+  '475031' = 'Explosives Workers, Ordnance Handling Experts, And Blasters',
+  '475040' = 'Mining Machine Operators',
+  '4750XX' = 'Other Extraction Workers',
+  '4750YY' = 'Derrick, Rotary Drill, And Service Unit Operators, And Roustabouts, Oil, Gas, and Mining',
+  '49904X' = 'Industrial And Refractory Machinery Mechanics',
+  '49909X' = 'Other Installation, Maintenance, And Repair Workers',
+  '514041' = 'Machinists',
+  '518010' = 'Power Plant Operators, Distributors, And Dispatchers',
+  '518090' = 'Miscellaneous Plant And System Operators',
+  '519010' = 'Chemical Processing Machine Setters, Operators, And Tenders',
+  '519020' = 'Crushing, Grinding, Polishing, Mixing, And Blending Workers'
+)
+
+for (year in 2005:2009){
+  file <- read.csv(paste0("Data/acs_microdata/ACSPUMS1Y", year, ".csv"))
+  clean_file <-file %>%
+    clean_names() %>%
+    select(-any_of(c("state", "x7", "st", 'x'))) %>% 
+    mutate(
+      occ_type = ifelse(socp %in% green_jobs, "Green", "Fossil Fuel"),
+      occupation = recode(socp, !!!soc_2009) ,
+      year = year,
+      puma = as.character(puma),
+      puma = str_pad(puma, width = 5, side = "left", pad = "0"),
+      puma = str_trim(puma),
+      region = recode(puma, !!!puma_2011),
+      county = str_extract(region, "([A-Za-z ]+?) County") %>% 
+        str_remove_all(" County") %>% 
+        str_trim()
+    )
+  data <- bind_rows(data, clean_file)
+}
+
+write.csv(data, file = 'Data/clean_microdata.csv', row.names = FALSE)
