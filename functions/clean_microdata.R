@@ -46,7 +46,9 @@ soc_2023 <- list(
 '518010' = 'Power Plant Operators, Distributors, And Dispatchers',
 '518090' = 'Miscellaneous Plant And System Operators',
 '519010' = 'Chemical Processing Machine Setters, Operators, And Tenders',
-'519020' = 'Crushing, Grinding, Polishing, Mixing, And Blending Workers'
+'519020' = 'Crushing, Grinding, Polishing, Mixing, And Blending Workers',
+'537070' = 'Pumping Station Operators',
+'5370XX' = 'Conveyor, Dredge, And Hoist And Winch Operators'
 )
 green_jobs <- list("472231", "4990XX", "4740XX", "471011", "414010", "472211", "519010", "518090", 
                    "518010", "514041", "1940XX", "172070","172051", "1721XX", "113051", "113071", 
@@ -112,7 +114,7 @@ soc_2015 <- list(
   '475040' = 'Mining Machine Operators',
   '4750XX' = 'Other Extraction Workers',
   '4750YY' = 'Derrick, Rotary Drill, And Service Unit Operators, And Roustabouts, Oil, Gas, and Mining',
-  '47XXX' = 'Other Construction Workers, Including Solar Photovoltaic Installers',
+  '47XXXX' = 'Other Construction Workers, Including Solar Photovoltaic Installers',
   '49904X' = 'Industrial And Refractory Machinery Mechanics',
   '49909X' = 'Other Installation, Maintenance, And Repair Workers',
   '4990XX' = 'Other Installation, Maintenance, And Repair Workers',
@@ -213,4 +215,7 @@ for (year in 2005:2009){
   data <- bind_rows(data, clean_file)
 }
 
+data <-data %>% 
+  mutate(occupation = ifelse(occupation == "Other Engineers", 'Other Engineers, Including Nuclear Engineers', occupation)) %>% 
+  filter(socp != '253041', socp != '411011')
 write.csv(data, file = 'Data/clean_microdata.csv', row.names = FALSE)
