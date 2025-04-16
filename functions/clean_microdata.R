@@ -48,7 +48,9 @@ soc_2023 <- list(
 '519010' = 'Chemical Processing Machine Setters, Operators, And Tenders',
 '519020' = 'Crushing, Grinding, Polishing, Mixing, And Blending Workers'
 )
-green_jobs <- list("472231", "4990XX", "4740XX", "471011", "414010", "472211", "519010", "518090", "518010", "514041", "1940XX", "172070","172051", "1721XX", "113051", "113071", "119041", "1191XX")
+green_jobs <- list("472231", "4990XX", "4740XX", "471011", "414010", "472211", "519010", "518090", 
+                   "518010", "514041", "1940XX", "172070","172051", "1721XX", "113051", "113071", 
+                   "119041", "1191XX", "19204X", '1940XX', '472231', '4740XX', '1721YY')
 
 data <- data.frame(pwgtp = numeric(), 
                    puma = character(), 
