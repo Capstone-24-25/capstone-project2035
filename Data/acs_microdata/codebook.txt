@@ -74,6 +74,7 @@ SOC Occupation code for 2012 and later based on 2010 SOC codes
 1940YY - SCI-Miscellaneous Life, Physical, and Social Science, Technicians, Including Social Science Research Assistants
 414010 - SAL-Sales Representatives, Wholesale And Manufacturing
 471011 - CON-First-Line Supervisors Of Construction Trades And Extraction Workers
+472111 - CON-Electricians
 472211 - CON-Sheet Metal Workers
 475021 - EXT-Earth Drillers, Except Oil and Gas
 475031 - EXT-Explosives Workers, Ordnance Handling Experts, And Blasters

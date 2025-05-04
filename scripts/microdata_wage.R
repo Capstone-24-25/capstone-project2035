@@ -1,5 +1,7 @@
 library(tidyverse)
 library(ggplot2)
+library(kableExtra)
+library(webshot)
 
 data <- read.csv("Data/clean_microdata.csv")
 
@@ -122,7 +124,7 @@ webshot("graphs_png/top10_wage_green.html",
 
 
 #average wages of the top 10 most common occupations
-data %>% 
+avgwage_common10 <- data %>% 
   filter(wagp > 0) %>%
   group_by(occupation) %>%
   summarise(mean_wage = mean(wagp), num_jobs = n()) %>%
@@ -131,5 +133,24 @@ data %>%
   ungroup() %>%
   mutate(mean_wage = scales::dollar(mean_wage)) %>% 
   kableExtra::kbl()
+save_kable(avgwage_common10, file = "graphs_png/avgwage_common10.html")
+webshot("graphs_png/avgwage_common10.html", 
+        file = "graphs_png/avgwage_common10.png")
 
+#check trend for each job in Green
+data %>% 
+  filter(wagp > 0, occ_type=='Green') %>%
+  group_by(year, county, occupation) %>%
+  summarise(mean_wage = mean(wagp)) %>%
+  ggplot(aes(x = year, y = mean_wage)) +
+  geom_line()+
+  facet_wrap(~ occupation)
 
+#check trends in FF
+data %>% 
+  filter(wagp > 0, occ_type=='Fossil Fuel') %>%
+  group_by(year, county, occupation) %>%
+  summarise(mean_wage = mean(wagp)) %>%
+  ggplot(aes(x = year, y = mean_wage)) +
+  geom_line()+
+  facet_wrap(~ occupation)

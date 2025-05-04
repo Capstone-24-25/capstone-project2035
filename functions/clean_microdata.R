@@ -52,7 +52,7 @@ soc_2023 <- list(
 )
 green_jobs <- list("472231", "4990XX", "4740XX", "471011", "414010", "472211", "519010", "518090", 
                    "518010", "514041", "1940XX", "172070","172051", "1721XX", "113051", "113071", 
-                   "119041", "1191XX", "19204X", '1940XX', '472231', '4740XX', '1721YY', '119XXX', '172141')
+                   "119041", "1191XX", "19204X", '472231', '4740XX', '1721YY', '119XXX', '172141', '192040', '1940xx')
 
 data <- data.frame(pwgtp = numeric(), 
                    puma = character(), 
@@ -180,7 +180,8 @@ soc_2009 <- list(
   '1940XX' = 'Other Life, Physical, And Social Science Technicians',
   '414010' = 'Sales Representatives, Wholesale And Manufacturing',
   '471011' = 'First-Line Supervisors/Managers Of Construction Trades And Extraction Workers',
-  '472211' = 'Electricians',
+  '472111' = 'Electricians',
+  '472211' = 'Sheet Metal Workers',
   '475021' = 'Earth Drillers, Except Oil and Gas',
   '475031' = 'Explosives Workers, Ordnance Handling Experts, And Blasters',
   '475040' = 'Mining Machine Operators',
@@ -203,6 +204,7 @@ for (year in 2005:2009){
     mutate(
       occ_type = ifelse(socp %in% green_jobs, "Green", "Fossil Fuel"),
       occupation = recode(socp, !!!soc_2009) ,
+      occ_type = ifelse(occupation == 'Electricians', 'Green', occupation),
       year = year,
       puma = as.character(puma),
       puma = str_pad(puma, width = 5, side = "left", pad = "0"),
@@ -216,6 +218,7 @@ for (year in 2005:2009){
 }
 
 data <-data %>% 
-  mutate(occupation = ifelse(occupation == "Other Engineers", 'Other Engineers, Including Nuclear Engineers', occupation)) %>% 
+  mutate(occupation = ifelse(occupation == "Other Engineers", 'Other Engineers, Including Nuclear Engineers', occupation),
+         occ_type = ifelse(occupation == 'Other Life, Physical, And Social Science Technicians', 'Green', occ_type)) %>% 
   filter(socp != '253041', socp != '411011')
 write.csv(data, file = 'Data/clean_microdata.csv', row.names = FALSE)
