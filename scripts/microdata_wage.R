@@ -139,18 +139,21 @@ webshot("graphs_png/avgwage_common10.html",
 
 #check trend for each job in Green
 data %>% 
-  filter(wagp > 0, occ_type=='Green') %>%
-  group_by(year, county, occupation) %>%
-  summarise(mean_wage = mean(wagp)) %>%
-  ggplot(aes(x = year, y = mean_wage)) +
+  filter(occ_type=='Green') %>%
+  group_by(year, occupation) %>%
+  summarise(count = n()) %>%
+  ggplot(aes(x = year, y = count)) +
   geom_line()+
   facet_wrap(~ occupation)
 
 #check trends in FF
 data %>% 
-  filter(wagp > 0, occ_type=='Fossil Fuel') %>%
-  group_by(year, county, occupation) %>%
-  summarise(mean_wage = mean(wagp)) %>%
-  ggplot(aes(x = year, y = mean_wage)) +
+  filter(occ_type=='Fossil Fuel') %>%
+  mutate(occupation = factor(occupation, levels = sort(unique(occupation)))) %>% 
+  group_by(year, occupation) %>%
+  summarise(count = n()) %>%
+  ggplot(aes(x = year, y =count, color = occupation)) +
   geom_line()+
   facet_wrap(~ occupation)
+
+

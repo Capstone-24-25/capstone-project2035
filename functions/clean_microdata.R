@@ -204,7 +204,7 @@ for (year in 2005:2009){
     mutate(
       occ_type = ifelse(socp %in% green_jobs, "Green", "Fossil Fuel"),
       occupation = recode(socp, !!!soc_2009) ,
-      occ_type = ifelse(occupation == 'Electricians', 'Green', occupation),
+      occ_type = ifelse(occupation == 'Electricians', 'Green', occ_type),
       year = year,
       puma = as.character(puma),
       puma = str_pad(puma, width = 5, side = "left", pad = "0"),
