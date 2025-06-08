@@ -1,0 +1,120 @@
+Codebook – Created 04/03/2025
+Dataset: ACSPUMS5Y2023
+
+Variables: 
+WAGP - Wages or salary income past 12 months (use ADJINC to adjust WAGP to constant dollars)
+SOCP - Standard Occupational Classification (SOC) codes for 2018 and later based on 2018 SOC codes
+
+User created variables: 
+PWGTP
+AGEP
+
+WAGP - Wages or salary income past 12 months (use ADJINC to adjust WAGP to constant dollars)
+Topics: 
+Income and Earnings
+Suggested Weight : PWGTP
+Description : 
+Wages or salary income past 12 months (use ADJINC to adjust WAGP to constant dollars)
+Values: 
+-1 - N/A (less than 15 years old). Unselect this value to get correct calculation of average for this variable
+0 - None
+4,999999 - $4 to 999999 (Rounded and top-coded)
+
+**For 2023 to 2016**
+SOCP - Standard Occupational Classification (SOC) codes for 2018 and later based on 2018 SOC codes
+Topics: 
+Occupation
+Suggested Weight : PWGTP
+Description : 
+Standard Occupational Classification (SOC) codes for 2018 and later based on 2018 SOC codes
+Values: 
+113051 - MGR-Industrial Production Managers
+113071 - MGR-Transportation, Storage, And Distribution Managers
+119041 - MGR-Architectural And Engineering Managers
+1191XX - MGR-Other Managers
+172051 - ENG-Civil Engineers
+172070 - ENG-Electrical And Electronics Engineers
+172141 - ENG-Mechanical Engineers
+1721XX - ENG-Petroleum, Mining And Geological Engineers, Including Mining Safety Engineers
+1721YY - ENG-Other Engineers
+19204X - SCI-Geoscientists And Hydrologists, Except Geographers
+1940XX - SCI-Environmental Science And Geoscience Technicians, And Nuclear Technicians
+1940YY - SCI-Other Life, Physical, And Social Science Technicians
+414010 - SAL-Sales Representatives, Wholesale And Manufacturing
+471011 - CON-First-Line Supervisors Of Construction Trades And Extraction Workers
+472211 - CON-Sheet Metal Workers
+472231 - CON-Solar Photovoltaic Installers
+4740XX - CON-Other Construction And Related Workers
+475020 - EXT-Surface Mining Machine Operators And Earth Drillers
+475032 - EXT-Explosives Workers, Ordnance Handling Experts, And Blasters
+475040 - EXT-Underground Mining Machine Operators
+4750XX - EXT-Other Extraction Workers
+4750YY - EXT-Derrick, Rotary Drill, And Service Unit Operators, And Roustabouts, Oil And Gas
+49904X - RPR-Industrial And Refractory Machinery Mechanics
+4990XX - RPR-Other Installation, Maintenance, And Repair Workers
+514041 - PRD-Machinists
+518010 - PRD-Power Plant Operators, Distributors, And Dispatchers
+518090 - PRD-Miscellaneous Plant And System Operators
+519010 - PRD-Chemical Processing Machine Setters, Operators, And Tenders
+519020 - PRD-Crushing, Grinding, Polishing, Mixing, And Blending Workers
+
+**For 2015 to **
+SOC Occupation code for 2012 and later based on 2010 SOC codes
+113051 - MGR-Industrial Production Managers
+113071 - MGR-Transportation, Storage, And Distribution Managers
+119041 - MGR-Architectural And Engineering Managers
+119XXX - MGR-Miscellaneous Managers
+172051 - ENG-Civil Engineers
+172070 - ENG-Electrical And Electronics Engineers
+172141 - ENG-Mechanical Engineers
+1721XX - ENG-Petroleum, Mining And Geological Engineers, Including Mining Safety Engineers
+1721YY - ENG-Other Engineers, Including Nuclear Engineers
+192040 - SCI-Environmental Scientists and Geoscientists
+1940XX - SCI-Geological and Petroleum Technicians, and Nuclear Technicians
+1940YY - SCI-Miscellaneous Life, Physical, and Social Science, Technicians, Including Social Science Research Assistants
+414010 - SAL-Sales Representatives, Wholesale And Manufacturing
+471011 - CON-First-Line Supervisors Of Construction Trades And Extraction Workers
+472111 - CON-Electricians
+472211 - CON-Sheet Metal Workers
+475021 - EXT-Earth Drillers, Except Oil and Gas
+475031 - EXT-Explosives Workers, Ordnance Handling Experts, And Blasters
+475040 - EXT-Mining Machine Operators
+4750XX - EXT-Miscellaneous Extraction Workers, Including Roof Bolters and Helpers
+4750YY - EXT-Derrick, Rotary Drill, And Service Unit Operators, And Roustabouts, Oil, Gas, and Mining
+47XXXX - CON-Miscellaneous Construction Workers, Including Solar Photovoltaic Installers, Septic Tank Servicers and Sewer Pip Cleaners
+49904X - RPR-Industrial And Refractory Machinery Mechanics
+49909X - 
+4990XX - RPR-Other Installation, Maintenance, And Repair Workers
+514041 - PRD-Machinists
+518010 - PRD-Power Plant Operators, Distributors, And Dispatchers
+518090 - PRD-Miscellaneous Plant And System Operators
+519010 - PRD-Chemical Processing Machine Setters, Operators, And Tenders
+519020 - PRD-Crushing, Grinding, Polishing, Mixing, And Blending Workers
+
+Selected Geographies (PUMA): 
+
+**For 2012-2023**
+11103 -- Ventura County (Southwest)--Oxnard & Port Hueneme Cities PUMA; California
+11102 -- Ventura County (Southeast)--Thousand Oaks City PUMA; California
+08301 -- Santa Barbara County (Northwest)--Santa Maria City & Orcutt PUMA; California
+11107 -- Ventura County (North)--Santa Paula, Fillmore & Ojai Cities PUMA; California
+08302 -- Santa Barbara County (North)--Lompoc, Guadalupe, Solvang & Buellton Cities PUMA; California
+08303 -- Santa Barbara County--South Coast Region PUMA; California
+07901 -- San Luis Obispo County (West)--Coastal Region PUMA; California
+11109 -- Ventura County (South Central)--Camarillo City & Moorpark City (Southwest) PUMA; California
+11108 -- Ventura County (Southeast)--Simi Valley City PUMA; California
+07902 -- San Luis Obispo County (East)--Inland Region PUMA; California
+11104 -- Ventura County (Southwest)--San Buenaventura (Ventura) City
+
+**For -2011**
+7950000US0606702 -- PUMA5 06702 -- Santa Barbara County (South Coast)
+7950000US0606602 -- PUMA5 06602 -- Ventura County (South Central)
+7950000US0606601 -- PUMA5 06601 -- Ventura County (North)
+7950000US0606500 -- PUMA5 06500 -- Ventura County (Thousand Oaks City)
+7950000US0603701 -- PUMA5 03701 -- San Luis Obispo County (Northeast)
+7950000US0603702 -- PUMA5 03702 -- San Luis Obispo County (Southwest)
+7950000US0606701 -- PUMA5 06701 -- Santa Barbara County (North)
+7950000US0606400 -- PUMA5 06400 -- Ventura County (Simi Valley City)
+7950000US0606300 -- PUMA5 06300 -- Ventura County (San Buenaventura City)
+7950000US0606200 -- PUMA5 06200 -- Ventura County (Oxnard City)
+
